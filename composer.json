@@ -1,0 +1,15 @@
+{
+    "name": "JunkyPic/PhpPrettyPrint",
+    "description": "A simple dumper for PHP in a human readable format",
+    "keywords": ["PHP", "dump"],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "JunkyPic\\": "src/JunkyPic"
+        }
+    }
+}
