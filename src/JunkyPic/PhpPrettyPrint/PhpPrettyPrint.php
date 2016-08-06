@@ -2,12 +2,31 @@
 
 namespace JunkyPic\PhpPrettyPrint;
 
+/**
+ * Class PhpPrettyPrint
+ *
+ * @package JunkyPic\PhpPrettyPrint
+ */
 class PhpPrettyPrint
 {
+    /**
+     * @var
+     */
     private static $debugBacktrace;
+
+    /**
+     * @var array
+     */
     private static $info = [];
+
+    /**
+     * @var string
+     */
     private static $output = "<div class=\"pretty-print\">";
 
+    /**
+     * @param $dump
+     */
     public static function dump($dump)
     {
         static::$debugBacktrace = debug_backtrace();
@@ -70,10 +89,12 @@ class PhpPrettyPrint
             case Types::TYPE_OBJECT:
                 static::$output .= HtmlBuilder::create()->getHtml($dump, Types::TYPE_OBJECT, static::$info);
                 break;
-
         }
 
         static::$output .= "</div>";
+        $css = file_get_contents(__DIR__ . '/../../css/darkly.css');
+
+        static::$output .= "<style>{$css}</style>";
         echo '<pre>';
         echo static::$output;
         static::$output = '';

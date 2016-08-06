@@ -1,5 +1,5 @@
 {
-    "name": "JunkyPic/PhpPrettyPrint",
+    "name": "junky-pic/php-pretty-print",
     "description": "A simple dumper for PHP in a human readable format",
     "keywords": ["PHP", "dump"],
     "license": "MIT",

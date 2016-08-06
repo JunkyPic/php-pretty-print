@@ -10,8 +10,14 @@ use JunkyPic\PhpPrettyPrint\Exception\OutputException;
  */
 abstract class Html
 {
+    /**
+     * @var null
+     */
     protected static $instance = null;
 
+    /**
+     * @var array
+     */
     protected static $quoteFlags = [
         // Will convert double-quotes and leave single-quotes alone
         'ENT_COMPAT' => 2,
@@ -36,11 +42,19 @@ abstract class Html
         'ENT_HTML5' => 48,
     ];
 
+    /**
+     * @param $string
+     *
+     * @return string
+     */
     protected static function getExcerpt($string)
     {
         return (string) "(" . substr($string, 0, 100) . "...)";
     }
 
+    /**
+     * @return null
+     */
     public static function create()
     {
         if(null === static::$instance)
@@ -51,16 +65,28 @@ abstract class Html
         return static::$instance;
     }
 
+    /**
+     * @param            $string
+     * @param int        $quoteStyle
+     * @param string     $charset
+     * @param bool|false $doubleEncode
+     *
+     * @return string
+     * @throws OutputException
+     */
     protected static function escape($string, $quoteStyle = ENT_HTML5, $charset = 'utf-8', $doubleEncode = false)
     {
         if( ! in_array($quoteStyle, static::$quoteFlags))
         {
-            throw new OutputException(vsprintf("Quote style not recognized. Accepted quote styles:" . str_repeat(' %s ', count(static::$quoteFlags)), static::$quoteFlags));
+            throw new OutputException(vsprintf("Quote style not recognized. Accepted quote styles:" . str_repeat(' %s ', count(static::$quoteFlags)), array_keys(static::$quoteFlags)));
         }
 
         return htmlentities($string, $quoteStyle, $charset, $doubleEncode);
     }
 
+    /**
+     * @return array
+     */
     protected static function getAcceptedEncodings()
     {
         return mb_list_encodings();

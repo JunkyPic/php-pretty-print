@@ -15,7 +15,6 @@ class Types
 
     public static function getType($variable)
     {
-
         if(is_callable($variable))
         {
             return Types::TYPE_CALLABLE_CALLBACK;
@@ -40,7 +39,6 @@ class Types
         {
             return Types::TYPE_STRING;
         }
-
 
         if(is_resource($variable))
         {
