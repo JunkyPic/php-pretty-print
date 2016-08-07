@@ -1,14 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 use JunkyPic\PhpPrettyPrint\PhpPrettyPrint;
 
 require_once __DIR__ . '/vendor/autoload.php';
-
-echo '<pre>';
-$method = new ReflectionMethod(\JunkyPic\PhpPrettyPrint\HtmlBuilder::class, 'escape');
-$method->setAccessible(true);
 
 $test = [
     'string'  => 'Lorem',
