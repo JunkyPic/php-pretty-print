@@ -64,13 +64,25 @@ class HtmlBuilder extends Html
             case Types::TYPE_OBJECT:
                 static::buildFromObject($param);
                 break;
+            case Types::TYPE_STRING:
+                static::buildFromString($param);
+                break;
         }
 
         static::$html .= "</dl>";
-        $out = static::$html;
-        static::$html = '';
+        return static::$html;
+    }
 
-        return $out;
+    /**
+     * @param $param
+     *
+     * @throws Exception\OutputException
+     */
+    private static function buildFromString($param)
+    {
+        $stringLength = strlen($param);
+
+        static::$html .= "<dd class=" . "string-color ". static::$cssClasses['dd'] . ">(" . $stringLength . ") "  . static::escape($param) . "</dd>";
     }
 
     /**
