@@ -20,6 +20,10 @@ class TypesTest extends PHPUnit_Framework_TestCase{
         // check if getType is working properly
         $this->assertEquals('boolean', \JunkyPic\PhpPrettyPrint\Types::getType(true));
         $this->assertEquals('integer', \JunkyPic\PhpPrettyPrint\Types::getType(1));
+        $this->assertEquals('integer', \JunkyPic\PhpPrettyPrint\Types::getType(-1));
+        $this->assertEquals('integer', \JunkyPic\PhpPrettyPrint\Types::getType(3232));
+        // Will fail - number is larger than PHP_INT_MAX on x64 systems or 32 for that matter
+        // $this->assertEquals('integer', \JunkyPic\PhpPrettyPrint\Types::getType(9223372036854775809));
         $this->assertEquals('float', \JunkyPic\PhpPrettyPrint\Types::getType(1.1));
         $this->assertEquals('string', \JunkyPic\PhpPrettyPrint\Types::getType('string'));
         $this->assertEquals('array', \JunkyPic\PhpPrettyPrint\Types::getType([1, 'string']));

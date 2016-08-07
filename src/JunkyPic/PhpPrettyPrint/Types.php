@@ -40,11 +40,6 @@ class Types
             return Types::TYPE_OBJECT;
         }
 
-        if(is_integer($variable))
-        {
-            return Types::TYPE_INTEGER;
-        }
-
         if(is_string($variable))
         {
             return Types::TYPE_STRING;
@@ -63,6 +58,23 @@ class Types
         if(is_bool($variable))
         {
             return Types::TYPE_BOOLEAN;
+        }
+
+        // Special case to handle integers larger than PHP_INT_MAX - 2147483647, which doesn't bloody work properly...
+        // Returns 0 if the two operands are equal, 1 if the left_operand is larger than the right_operand, -1 otherwise.
+        // @TODO fix this
+//        switch(bccomp($variable, 2147483647))
+//        {
+//            case 0:
+//            case 1:
+//                return TYPES::TYPE_INTEGER;
+//                break;
+//        }
+
+        // if(is_integer($variable))
+        if((int)$variable === $variable)
+        {
+            return Types::TYPE_INTEGER;
         }
 
         if(is_float($variable))

@@ -101,7 +101,6 @@ class HtmlBuilder extends Html
 
         $this->object['Class name'] = $reflection->getName();
 
-
         $this->object['Is internal'] = $reflection->isInternal() ? 'Yes' : 'No';
         $this->object['Is iterable'] = $reflection->isIterateable() ? 'Yes' : 'No';
         $this->object['Is abstract'] = $reflection->isAbstract() ? 'Yes' : 'No';
