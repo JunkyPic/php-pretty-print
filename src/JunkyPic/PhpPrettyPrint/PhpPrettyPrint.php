@@ -111,7 +111,6 @@ class PhpPrettyPrint
 
         static::$output .= "</div>";
 
-
         if(isset($settings['pre-tags']) && $settings['pre-tags'] == true)
         {
             static::$output .= "<style>{$css}</style>";

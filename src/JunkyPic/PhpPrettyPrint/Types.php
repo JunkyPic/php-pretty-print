@@ -1,6 +1,11 @@
 <?php
 namespace JunkyPic\PhpPrettyPrint;
 
+/**
+ * Class Types
+ *
+ * @package JunkyPic\PhpPrettyPrint
+ */
 class Types
 {
     const TYPE_BOOLEAN = 'boolean';
