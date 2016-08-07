@@ -1,18 +1,17 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-$testArray = [
-    'Lorem',
-    'ipsum',
-    1,
-    'dolor' => [
-        'sit',
-        3
-    ],
-    4 => [
-        '3' => 4
-    ]
+$test = [
+    'string'  => 'Lorem',
+    'integer' => 1,
+    'float'   => 1.2,
+    'null'    => null,
+    'bool'    => true,
+    'array'   => [],
+    'object1' => function ()
+    {
+    },
+    'object2' => new DateTime(),
 ];
 
-\JunkyPic\PhpPrettyPrint\PhpPrettyPrint::dump($testArray);
-
+\JunkyPic\PhpPrettyPrint\PhpPrettyPrint::dump($test);

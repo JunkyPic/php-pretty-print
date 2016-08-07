@@ -92,7 +92,7 @@ class PhpPrettyPrint
         }
 
         static::$output .= "</div>";
-        $css = file_get_contents(__DIR__ . '/../../css/darkly.css');
+        $css = file_get_contents(__DIR__ . '/../../Themes/darkly.css');
 
         static::$output .= "<style>{$css}</style>";
         echo '<pre>';

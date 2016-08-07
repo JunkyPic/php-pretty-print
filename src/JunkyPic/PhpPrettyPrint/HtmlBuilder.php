@@ -198,7 +198,6 @@ class HtmlBuilder extends Html
     private static function buildHeader(array $info)
     {
         static::$html .= "<div class=\"php-pretty-print-header\"><dl><dt>Where was PhpPrettyPrint::dump() called?</dt><dl><dt>File: {$info['file']}</dt><dd></dd><dt>Line: {$info['line']}</dt><dd></dd></dl></div><hr>";
-        static::$html .= "<div class=\"php-pretty-print-notes\"><dl><dt>Notes</dt><dd><textarea rows=\"2\" cols=\"100\"></textarea></dd></dl></div><hr>";
     }
 
     /**
