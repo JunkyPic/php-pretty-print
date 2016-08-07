@@ -57,6 +57,12 @@ class PhpPrettyPrint
             {
                 // get whatever info is needed
 
+                // in case anybody's confused about what the following code does:
+                // it parses the file in which ::dump was called and searches
+                // for the argument passed in. The idea is the to get argument
+                // as a string literal, as in pass $array get the string literal
+                // '$array' back, NOT the value of the $array variable
+
                 // open the file in which this method was called
                 $file = fopen($value['file'], 'r');
                 // get the name the argument passed in to ::dump
