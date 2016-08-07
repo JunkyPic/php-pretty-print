@@ -62,7 +62,10 @@ class PhpPrettyPrint
                 // get the name the argument passed in to ::dump
                 while(($line = fgets($file)) !== false)
                 {
+                    // explode the class name
                     $explode = explode('\\', $value['class']);
+                    // get the last entry, meaning exactly the class name
+                    // and append the method
                     $functionName = end($explode) . '::dump';
                     // if the current line contains this method
                     if(strpos($line, $functionName) !== false)

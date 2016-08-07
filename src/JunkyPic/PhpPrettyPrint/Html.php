@@ -1,7 +1,6 @@
 <?php
 
 namespace JunkyPic\PhpPrettyPrint;
-use JunkyPic\PhpPrettyPrint\Exception\OutputException;
 
 /**
  * Class HtmlOutput
@@ -18,7 +17,7 @@ abstract class Html
     /**
      * @var array
      */
-    protected static $quoteFlags = [
+    protected $quoteFlags = [
         // Will convert double-quotes and leave single-quotes alone
         'ENT_COMPAT' => 2,
         // Will convert both double and single quotes
@@ -47,7 +46,7 @@ abstract class Html
      *
      * @return string
      */
-    protected static function getExcerpt($string)
+    protected function getExcerpt($string)
     {
         return (string) "(" . substr($string, 0, 100) . "...)";
     }
@@ -74,9 +73,9 @@ abstract class Html
      * @return string
      * @throws \Exception
      */
-    protected static function escape($string, $quoteStyle = ENT_HTML5, $charset = 'utf-8', $doubleEncode = false)
+    protected function escape($string, $quoteStyle = ENT_HTML5, $charset = 'utf-8', $doubleEncode = false)
     {
-        if( ! in_array($quoteStyle, static::$quoteFlags))
+        if( ! in_array($quoteStyle, $this->quoteFlags))
         {
             throw new \Exception(vsprintf("Quote style not recognized. Accepted quote styles:" . str_repeat(' %s ', count(static::$quoteFlags)), array_keys(static::$quoteFlags)));
         }
@@ -87,7 +86,7 @@ abstract class Html
     /**
      * @return array
      */
-    protected static function getAcceptedEncodings()
+    protected function getAcceptedEncodings()
     {
         return mb_list_encodings();
     }

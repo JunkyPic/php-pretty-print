@@ -15,7 +15,7 @@ class Types
     const TYPE_ARRAY = 'array';
     const TYPE_OBJECT = 'object';
     const TYPE_RESOURCE = 'resource';
-    const TYPE_NULL = 'null';
+    const TYPE_NULL = 'NULL';
     const TYPE_CALLABLE_CALLBACK = 'callable';
 
     public static function getType($variable)
