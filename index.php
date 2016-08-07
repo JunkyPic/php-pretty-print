@@ -1,4 +1,7 @@
 <?php
+
+use JunkyPic\PhpPrettyPrint\PhpPrettyPrint;
+
 require_once __DIR__ . '/vendor/autoload.php';
 
 $test = [
@@ -21,5 +24,5 @@ $test = [
 //Integer tempus eu libero ut tincidunt. Pellentesque lobortis nunc viverra augue ornare laoreet. Donec bibendum nisl sit amet lorem tincidunt placerat. Maecenas malesuada ultrices sagittis. Donec ut tempus mi. Ut accumsan scelerisque magna. Integer ultricies cursus libero lobortis auctor. Aliquam pulvinar porttitor libero vel tempus. Sed eget fermentum dolor. Curabitur hendrerit purus vitae ipsum semper vulputate. Donec ornare id justo in ultrices. Etiam faucibus purus at lacinia blandit. Vestibulum malesuada augue at elit congue finibus. Nulla quis nunc ac metus consectetur mattis at eu dui. Phasellus mollis quam feugiat leo rutrum pellentesque.
 //Pellentesque elementum tortor nibh, non pellentesque augue efficitur a. Fusce id risus ac dolor pretium iaculis vitae ut risus. Vestibulum enim purus, convallis auctor enim eu, feugiat posuere orci. Sed ut finibus ligula. Nulla laoreet tortor ac tortor pellentesque aliquam. Maecenas purus magna, ullamcorper quis rutrum ultricies, tincidunt nec orci. Phasellus eu quam nec eros lacinia posuere. Vestibulum id vestibulum turpis. Proin aliquam magna odio, feugiat eleifend felis vestibulum ut. Integer pulvinar id lectus in pharetra. Aenean cursus mollis nisi, id ultricies ligula luctus ac. Integer et elit condimentum mauris vestibulum sagittis. ';
 
-\JunkyPic\PhpPrettyPrint\PhpPrettyPrint::dump($test);
+PhpPrettyPrint::dump($test);
 //\JunkyPic\PhpPrettyPrint\PhpPrettyPrint::dump($string);
