@@ -78,16 +78,8 @@ class PhpPrettyPrint
                     {
                         // since only the name of the variable passed in is of interest
                         // we can just replace the method and the trailing );
-                        // no need for preg_match since str_replace is faster
-                        $argument = str_replace($functionName . '(', '', $line);
-                        $argument = str_replace(');', '', $argument);
-                        // remove pre-pended \(if any)
-                        if(strpos($argument, '\\') !== false)
-                        {
-                            $argument = str_replace('\\', '', $argument);
-                        }
+                        $argument = str_replace([$functionName . '(', ');', '/', '\\'], '', $line);
                         static::$info['argument_name'] = preg_replace('~\x{00a0}~', '', preg_replace('/\s+/', '', trim($argument)));
-
                         // get other info of interest
                         static::$info['file'] = $value['file'];
                         static::$info['line'] = $value['line'];

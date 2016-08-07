@@ -2,8 +2,6 @@
 
 namespace JunkyPic\PhpPrettyPrint;
 
-use JunkyPic\PhpPrettyPrint\Exception\HtmlBuilderException;
-
 /**
  * Class HtmlBuilder
  *
@@ -17,11 +15,6 @@ class HtmlBuilder extends Html
     private $html = '';
 
     /**
-     * @var
-     */
-    private $objectClone;
-
-    /**
      * @var array
      */
     private $object = [];
@@ -30,18 +23,9 @@ class HtmlBuilder extends Html
      * @var array
      */
     private $cssClasses = [
-        'dl' => 'dl-list',
-        'dt' => 'dt-term',
-        'dd' => 'dd-desc',
-    ];
-
-    /**
-     * @var array
-     */
-    private $hyperlinkWhitelistedAttributes = [
-        'href'   => '#',
-        'target' => '_self',
-        'type'   => 'text/html',
+        'dl' => 'd-list',
+        'dt' => 'd-term',
+        'dd' => 'd-desc',
     ];
 
     /**
@@ -54,22 +38,34 @@ class HtmlBuilder extends Html
     public function getHtml($param, $type, array $info)
     {
         $this->buildHeader($info);
-        $this->html .= "<dl class=\"php-pretty-print-info-parent\"><dt><span class=\"argument-and-type\">{$info['argument_name']} ({$type})</span></dt>";
-
+        $this->html .=
+                "<dl class=\"php-pretty-print-info-parent\">" .
+                    "<dt>" .
+                    "<span class=\"argument-and-type\">{$info['argument_name']} ({$type})</span>" .
+                    "</dt>";
+                    // tag closes bellow
         switch($type)
         {
+            case Types::TYPE_BOOLEAN:
+            case Types::TYPE_INTEGER:
+            case Types::TYPE_FLOAT:
+            case Types::TYPE_RESOURCE:
+            case Types::TYPE_NULL:
+                $this->buildFromString($param);
+                break;
             case Types::TYPE_ARRAY:
-                static::buildFromArray($param);
+                $this->buildFromArray($param);
                 break;
             case Types::TYPE_OBJECT:
-                static::buildFromObject($param);
+                $this->buildFromObject($param);
                 break;
             case Types::TYPE_STRING:
-                static::buildFromString($param);
+                $this->buildFromString($param);
                 break;
         }
 
         $this->html .= "</dl>";
+
         return $this->html;
     }
 
@@ -82,7 +78,11 @@ class HtmlBuilder extends Html
     {
         $stringLength = strlen($param);
 
-        $this->html .= "<dd class=" . "string-color ". $this->cssClasses['dd'] . ">(" . $stringLength . ") "  . $this->escape($param) . "</dd>";
+        $this->html .=
+            "<dd class=" . "string-color " . $this->cssClasses['dd'] . ">" .
+                "(" . $stringLength . ") " .
+                $this->escape($param) .
+            "</dd>";
     }
 
     /**
@@ -92,10 +92,6 @@ class HtmlBuilder extends Html
     {
         $reflection = new \ReflectionObject($param);
 
-        if($reflection->isCloneable())
-        {
-            $this->objectClone = clone $param;
-        }
         // Get info on the object
         $this->object['In namespace'] = $reflection->inNamespace() ? 'Yes' : 'No';
         if($reflection->inNamespace())
@@ -104,6 +100,19 @@ class HtmlBuilder extends Html
         }
 
         $this->object['Class name'] = $reflection->getName();
+
+
+        $this->object['Is internal'] = $reflection->isInternal() ? 'Yes' : 'No';
+        $this->object['Is iterable'] = $reflection->isIterateable() ? 'Yes' : 'No';
+        $this->object['Is abstract'] = $reflection->isAbstract() ? 'Yes' : 'No';
+        $this->object['Is final'] = $reflection->isFinal() ? 'Yes' : 'No';
+        $this->object['Is user defined'] = $reflection->isUserDefined() ? 'Yes' : 'No';
+        $this->object['Is instantiable'] = $reflection->isInstantiable() ? 'Yes' : 'No';
+        $this->object['Is clonable'] = $reflection->isCloneable() ? 'Yes' : 'No';
+        $this->object['Is interface'] = $reflection->isInterface() ? 'Yes' : 'No';
+        $this->object['Class constants'] = ! empty($reflection->getConstants()) ? $reflection->getConstants() : 'Class has no constants';
+        $this->object['Class static properties'] = ! empty($reflection->getStaticProperties()) ? $reflection->getStaticProperties() : 'Class has no static properties';
+        $this->object['Class default properties'] = ! empty($reflection->getDefaultProperties()) ? $reflection->getDefaultProperties() : 'Class has no default properties';
 
         if(null === $reflection->getConstructor())
         {
@@ -114,20 +123,9 @@ class HtmlBuilder extends Html
             $this->object['Class construct'] = $reflection->getConstructor();
         }
 
-        $this->object['Is internal'] = $reflection->isInternal() ? 'Yes' : 'No';
-        $this->object['Is iterable'] = $reflection->isIterateable() ? 'Yes' : 'No';
-        $this->object['Is abstract'] = $reflection->isAbstract() ? 'Yes' : 'No';
-        $this->object['Is final'] = $reflection->isFinal() ? 'Yes' : 'No';
-        $this->object['Is user defined'] = $reflection->isUserDefined() ? 'Yes' : 'No';
-        $this->object['Is instantiable'] = $reflection->isInstantiable() ? 'Yes' : 'No';
-        $this->object['Is clonable'] = $reflection->isCloneable() ? 'Yes' : 'No';
-        $this->object['Is interface'] = $reflection->isInterface() ? 'Yes' : 'No';
-
         $this->object['Class interfaces'] = ! empty($reflection->getInterfaces()) ? $reflection->getInterfaces() : 'Class implements no interfaces';
         $this->object['Class traits'] = ! empty($reflection->getTraits()) ? $reflection->getTraits() : 'Class has no traits';
         $this->object['Class parent'] = ($reflection->getParentClass()) !== false ? $reflection->getParentClass() : 'Class has no parent';
-        $this->object['Class static properties'] = ! empty($reflection->getStaticProperties()) ? $reflection->getStaticProperties() : 'Class has no static properties';
-        $this->object['Class static properties'] = ! empty($reflection->getDefaultProperties()) ? $reflection->getDefaultProperties() : 'Class has no default properties';
 
         if(false === $reflection->getFileName())
         {
@@ -165,7 +163,6 @@ class HtmlBuilder extends Html
             $this->object['Doc comments'] = $reflection->getDocComment();
         }
 
-        $this->object['Class constants'] = ! empty($reflection->getConstants()) ? $reflection->getConstants() : 'Class has no constants';
         // End get info
         $this->buildFromObjectInformationRecursive($this->object);
     }
@@ -184,18 +181,25 @@ class HtmlBuilder extends Html
             if(Types::getType($value) === Types::TYPE_ARRAY)
             {
                 $printKey = Html::escape($key);
-                $this->html .= "<dt class=" . $this->cssClasses['dt'] . "><span class=\"key-values\"> {$printKey}</span>" .
-                    "<span class=\"equal\"> => </span>" .
-                    "<br/></dt>";
+                $this->html .=
+                    "<dt class=" . $this->cssClasses['dt'] . ">" .
+                    "<span class=\"css-array-keys\"> {$printKey}</span>" .
+                    "<span class=\"css-pointer\"> => </span>" .
+                    "<br/>" .
+                    "</dt>";
                 $this->buildFromObjectInformationRecursive($value);
             }
             else
             {
                 $printKey = Html::escape($key);
                 $printValue = Html::escape($value);
-                $this->html .= "<dt class=" . $this->cssClasses['dt'] . "><span class=\"key-values\"> {$printKey}</span>" .
-                    "<span class=\"equal\"> =></span> " .
-                    "{$printValue}</dt><dd class=" . $this->cssClasses['dd'] . ">";
+                $this->html .=
+                    "<dt class=" . $this->cssClasses['dt'] . ">" .
+                    "<span class=\"css-array-keys\"> {$printKey}</span>" .
+                    "<span class=\"css-pointer\"> =></span> " .
+                    "<span class=\"css-array-values\">{$printValue}</span>" .
+                    "</dt>" .
+                    "<dd class=" . $this->cssClasses['dd'] . ">";
             }
         }
         $this->html .= "</dl>";
@@ -207,39 +211,15 @@ class HtmlBuilder extends Html
      */
     private function buildHeader(array $info)
     {
-        $this->html .= "<div class=\"php-pretty-print-header\"><dl><dt>Where was PhpPrettyPrint::dump() called?</dt><dl><dt>File: {$info['file']}</dt><dd></dd><dt>Line: {$info['line']}</dt><dd></dd></dl></div><hr>";
-    }
-
-    /**
-     * @param        $hyperlinkText
-     * @param string $selfAnchorText
-     *
-     * @throws \Exception
-     * @throws HtmlBuilderException
-     */
-    private function buildHyperlinkElement($hyperlinkText, $selfAnchorText = '')
-    {
-        if( ! is_string($hyperlinkText))
-        {
-            throw new HtmlBuilderException("The {$hyperlinkText} must be a string");
-        }
-
-        $hyperlink_text = Html::escape($hyperlinkText);
-
-        $this->html = '<a ';
-        foreach($this->hyperlinkWhitelistedAttributes as $key => $value)
-        {
-            if($key == 'href' && ! empty($selfAnchorText))
-            {
-                $this->html .= $key . '="' . $value . preg_replace('~\x{00a0}~', '', preg_replace('/\s+/', '', trim($selfAnchorText))) . '"';
-            }
-            else
-            {
-                $this->html .= $key . '="' . $value . '"';
-            }
-        }
-
-        $this->html .= ">{$hyperlink_text}</a>";
+        $this->html .=
+            "<div class=\"php-pretty-print-header\">" .
+                "<dl>" .
+                    "<dt>Where was PhpPrettyPrint::dump() called?</dt>" .
+                    "<dd>File: {$info['file']}</dd>" .
+                    "<dd>Line: {$info['line']}</dd>" .
+                "</dl>" .
+            "</div>" .
+            "<hr>";
     }
 
     /**
@@ -264,7 +244,7 @@ class HtmlBuilder extends Html
         {
             if(is_callable($value) || is_object($value))
             {
-                $this->html .= "<dt class=" . $this->cssClasses['dt'] . ">Object</dt>";
+                $this->html .= "<dt class=" . $this->cssClasses['dt'] . "><span class=\"css-string-object\">Object</span></dt>";
                 $this->buildFromObject($value);
             }
             else
@@ -273,29 +253,38 @@ class HtmlBuilder extends Html
                 {
                     $typeKey = gettype($key);
                     $typeValue = gettype($value);
+
                     $lengthValue = count($value);
+
                     $printKey = Html::escape($key);
 
                     $lengthKey = strlen($key);
 
                     if($typeKey == 'string')
                     {
-                        $this->html .= "<dt class=" . $this->cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} ({$lengthKey}) \"{$printKey}\"</span>" .
-                            "<span class=\"equal\"> => </span>" .
-                            "{$typeValue}({$lengthValue}) <br/></dt>";
+                        $this->html .=
+                            "<dt class=" . $this->cssClasses['dt'] . ">" .
+                            "<span class=\"css-array-keys\">{$typeKey} ({$lengthKey}) \"{$printKey}\"</span>" .
+                            "<span class=\"css-pointer\"> => </span>" .
+                            "<span class=\"css-array-values\">{$typeValue}({$lengthValue})</span>" .
+                            "<br/>" .
+                            "</dt>";
                     }
                     else
                     {
-                        $this->html .= "<dt class=" . $this->cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} {$printKey}</span>" .
-                            "<span class=\"equal\"> => </span>" .
-                            "{$typeValue}({$lengthValue}) <br/></dt>";
+                        $this->html .=
+                            "<dt class=" . $this->cssClasses['dt'] . ">" .
+                            "<span class=\"css-array-keys\">{$typeKey} {$printKey}</span>" .
+                            "<span class=\"css-pointer\"> => </span>" .
+                            "<span class=\"css-array-values\">{$typeValue}({$lengthValue})</span>" .
+                            "<br/>" .
+                            "</dt>";
                     }
 
                     $this->buildFromArrayRecursive($value);
                 }
                 else
                 {
-
                     $printKey = Html::escape($key);
                     $printValue = Html::escape($value);
 
@@ -309,30 +298,46 @@ class HtmlBuilder extends Html
                     {
                         if($typeValue == 'string')
                         {
-                            $this->html .= "<dt class=" . $this->cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} ({$lengthKey}) \"{$printKey}\"</span>" .
-                                "<span class=\"equal\"> => </span>" .
-                                "{$typeValue} ({$lengthValue})\"{$printValue}\"</dt><dd class=" . $this->cssClasses['dd'] . "></dd>";
+                            $this->html .=
+                                "<dt class=" . $this->cssClasses['dt'] . ">" .
+                                "<span class=\"css-array-keys\">{$typeKey} ({$lengthKey}) \"{$printKey}\"</span>" .
+                                "<span class=\"css-pointer\"> => </span>" .
+                                "<span class=\"css-array-values\">{$typeValue} ({$lengthValue})\"{$printValue}\"</span>" .
+                                "</dt>" .
+                                "<dd class=" . $this->cssClasses['dd'] . "></dd>";
                         }
                         else
                         {
-                            $this->html .= "<dt class=" . $this->cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} ({$lengthKey}) \"{$printKey}\"</span>" .
-                                "<span class=\"equal\"> => </span>" .
-                                "{$typeValue} {$printValue}</dt><dd class=" . $this->cssClasses['dd'] . "></dd>";
+                            $this->html .=
+                                "<dt class=" . $this->cssClasses['dt'] . ">" .
+                                "<span class=\"css-array-keys\">{$typeKey} ({$lengthKey}) \"{$printKey}\"</span>" .
+                                "<span class=\"css-pointer\"> => </span>" .
+                                "<span class=\"css-array-values\">{$typeValue} {$printValue}</span>" .
+                                "</dt>" .
+                                "<dd class=" . $this->cssClasses['dd'] . "></dd>";
                         }
                     }
                     else
                     {
                         if($typeValue == 'string')
                         {
-                            $this->html .= "<dt class=" . $this->cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} {$printKey}</span>" .
-                                "<span class=\"equal\"> => </span>" .
-                                "{$typeValue} ({$lengthValue})\"{$printValue}\"</dt><dd class=" . $this->cssClasses['dd'] . "></dd>";
+                            $this->html .=
+                                "<dt class=" . $this->cssClasses['dt'] . ">" .
+                                "<span class=\"css-array-keys\">{$typeKey} {$printKey}</span>" .
+                                "<span class=\"css-pointer\"> => </span>" .
+                                "<span class=\"css-array-values\">{$typeValue} ({$lengthValue})\"{$printValue}\"</span>" .
+                                "</dt>" .
+                                "<dd class=" . $this->cssClasses['dd'] . "></dd>";
                         }
                         else
                         {
-                            $this->html .= "<dt class=" . $this->cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} {$printKey}</span>" .
-                                "<span class=\"equal\"> => </span>" .
-                                "{$typeValue} {$printValue}</dt><dd class=" . $this->cssClasses['dd'] . "></dd>";
+                            $this->html .=
+                                "<dt class=" . $this->cssClasses['dt'] . ">
+                                <span class=\"css-array-keys\">{$typeKey} {$printKey}</span>" .
+                                "<span class=\"css-pointer\"> => </span>" .
+                                "<span class=\"css-array-values\">{$typeValue} {$printValue}</span>" .
+                                "</dt>" .
+                                "<dd class=" . $this->cssClasses['dd'] . "></dd>";
                         }
                     }
                 }

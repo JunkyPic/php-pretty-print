@@ -4,16 +4,24 @@ html, body{
 .pretty-print{
     color: #fff;
 }
-.dt-term{
+.d-term{
     color:#40c133;
 }
-.key-values{
+.css-array-keys{
     color: #9876AA;
 }
+.css-array-values{
+    color:#40c133;
+}
+
+.css-string-object{
+    color: #B2772F;
+}
+
 .php-pretty-print-header{
     color: #ffffff;
 }
-.equal{
+.css-pointer{
     color: #ffffff;
 }
 .argument-and-type{

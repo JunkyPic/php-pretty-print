@@ -18,6 +18,11 @@ class Types
     const TYPE_NULL = 'NULL';
     const TYPE_CALLABLE_CALLBACK = 'callable';
 
+    /**
+     * @param $variable
+     *
+     * @return string
+     */
     public static function getType($variable)
     {
         if(is_callable($variable))
