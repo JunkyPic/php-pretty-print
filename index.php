@@ -10,11 +10,6 @@ echo '<pre>';
 $method = new ReflectionMethod(\JunkyPic\PhpPrettyPrint\HtmlBuilder::class, 'escape');
 $method->setAccessible(true);
 
-$string = "A 'quote' is <b>bold</b>";
-
-print_r($method->invokeArgs(new \JunkyPic\PhpPrettyPrint\HtmlBuilder(), [$string, ENT_QUOTES]));
-die();
-
 $test = [
     'string'  => 'Lorem',
     'integer' => 1,
