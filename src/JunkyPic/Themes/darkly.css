@@ -1,39 +1,25 @@
 html, body{
     background-color: #231815;
 }
-
 .pretty-print{
     color: #fff;
 }
-
 .dt-term{
     color:#40c133;
 }
-
 .key-values{
     color: #9876AA;
 }
-
 .php-pretty-print-header{
-
+    color: #ffffff;
 }
-
 .equal{
     color: #ffffff;
 }
-
 .argument-and-type{
     color: #B2772F;
 }
-
-.footer{
-    position: absolute;
-    bottom:0;
-    left: 45%;
-    margin-bottom: 10px;
-}
-
-.footer a{
+.github{
     color:#ffffff;
     text-decoration: none;
 }

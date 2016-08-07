@@ -1,0 +1,5 @@
+{
+  "theme" : "darkly",
+  "pre-tags" : true,
+  "remove-git-link": false
+}

@@ -29,6 +29,24 @@ class PhpPrettyPrint
      */
     public static function dump($dump)
     {
+        $settings = json_decode(file_get_contents(__DIR__ . '/../../settings.json'), true);
+
+        if(is_null($settings))
+        {
+            $error = "Settings file is invalid.<br>Possible problems:<br>";
+            $error .= " - The file doesn't exist, in which case feel free to create one yourself, or just copy it from <a target='_blank' href='https://gist.github.com/JunkyPic/4adbf5495845f4bb3ee684fd1f5078fa'>here</a>";
+            $error .= " and place in the src folder.<br>";
+            $error .= " - The json format is invalid. A tutorial on how to write valid json can be found <a target='_blank' href=\"http://lmgtfy.com/?q=how+to+create+json\">here</a>";
+            die($error);
+        }
+
+        $css = isset($settings['theme']) ? file_get_contents(__DIR__ . '/../Themes/' . $settings['theme'] . '.css') : '';
+
+        if(isset($settings['remove-git-link']) && $settings['remove-git-link'] == false)
+        {
+            static::$output .= "<dl><dt><a class=\"github\" target=\"_blank\" href=\"https://github.com/JunkyPic/php-pretty-print\">Visit on Github</a></dt></dl></div>";
+        }
+
         static::$debugBacktrace = debug_backtrace();
 
         // Parse the debug backtrace until the current file is reached
@@ -92,13 +110,21 @@ class PhpPrettyPrint
         }
 
         static::$output .= "</div>";
-        $css = file_get_contents(__DIR__ . '/../../Themes/darkly.css');
+
+
+        if(isset($settings['pre-tags']) && $settings['pre-tags'] == true)
+        {
+            static::$output .= "<style>{$css}</style>";
+            echo '<pre>';
+            echo static::$output;
+            static::$output = '';
+            echo '</pre>';
+            die();
+        }
 
         static::$output .= "<style>{$css}</style>";
-        echo '<pre>';
         echo static::$output;
         static::$output = '';
-        echo '</pre>';
         die();
     }
 }

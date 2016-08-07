@@ -66,7 +66,6 @@ class HtmlBuilder extends Html
                 break;
         }
 
-        static::$html .= static::buildFooter();
         static::$html .= "</dl>";
         $out = static::$html;
         static::$html = '';
@@ -107,7 +106,7 @@ class HtmlBuilder extends Html
         static::$object['Is iterable'] = $reflection->isIterateable() ? 'Yes' : 'No';
         static::$object['Is abstract'] = $reflection->isAbstract() ? 'Yes' : 'No';
         static::$object['Is final'] = $reflection->isFinal() ? 'Yes' : 'No';
-        static::$object['Is user_defined'] = $reflection->isUserDefined() ? 'Yes' : 'No';
+        static::$object['Is user defined'] = $reflection->isUserDefined() ? 'Yes' : 'No';
         static::$object['Is instantiable'] = $reflection->isInstantiable() ? 'Yes' : 'No';
         static::$object['Is clonable'] = $reflection->isCloneable() ? 'Yes' : 'No';
         static::$object['Is interface'] = $reflection->isInterface() ? 'Yes' : 'No';
@@ -156,7 +155,6 @@ class HtmlBuilder extends Html
 
         static::$object['Class constants'] = ! empty($reflection->getConstants()) ? $reflection->getConstants() : 'Class has no constants';
         // End get info
-
         static::buildFromObjectInformationRecursive(static::$object);
     }
 
@@ -198,14 +196,6 @@ class HtmlBuilder extends Html
     private static function buildHeader(array $info)
     {
         static::$html .= "<div class=\"php-pretty-print-header\"><dl><dt>Where was PhpPrettyPrint::dump() called?</dt><dl><dt>File: {$info['file']}</dt><dd></dd><dt>Line: {$info['line']}</dt><dd></dd></dl></div><hr>";
-    }
-
-    /**
-     * @return string
-     */
-    private static function buildFooter()
-    {
-        return "<div><a target=\"_blank\" href=\"https://github.com/JunkyPic\">Visit on Github</a></div>";
     }
 
     /**
@@ -260,69 +250,78 @@ class HtmlBuilder extends Html
 
         foreach($array as $key => $value)
         {
-            if(Types::getType($value) === Types::TYPE_ARRAY)
+            if(is_callable($value) || is_object($value))
             {
-                $typeKey = gettype($key);
-                $typeValue = gettype($value);
-                $lengthValue = count($value);
-                $printKey = Html::escape($key);
-
-                $lengthKey = strlen($key);
-
-                if($typeKey == 'string')
-                {
-                    static::$html .= "<dt class=" . static::$cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} ({$lengthKey}) \"{$printKey}\"</span>" .
-                        "<span class=\"equal\"> => </span>" .
-                        "{$typeValue}({$lengthValue}) <br/></dt>";
-                }
-                else
-                {
-                    static::$html .= "<dt class=" . static::$cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} {$printKey}</span>" .
-                        "<span class=\"equal\"> => </span>" .
-                        "{$typeValue}({$lengthValue}) <br/></dt>";
-                }
-
-                static::buildFromArrayRecursive($value);
+                static::$html .= "<dt class=" . static::$cssClasses['dt'] . ">Object</dt>";
+                static::buildFromObject($value);
             }
             else
             {
-                $printKey = Html::escape($key);
-                $printValue = Html::escape($value);
-
-                $typeKey = gettype($key);
-                $typeValue = gettype($value);
-
-                $lengthValue = strlen($value);
-                $lengthKey = strlen($key);
-
-                if($typeKey == 'string')
+                if(Types::getType($value) === Types::TYPE_ARRAY)
                 {
-                    if($typeValue == 'string')
+                    $typeKey = gettype($key);
+                    $typeValue = gettype($value);
+                    $lengthValue = count($value);
+                    $printKey = Html::escape($key);
+
+                    $lengthKey = strlen($key);
+
+                    if($typeKey == 'string')
                     {
                         static::$html .= "<dt class=" . static::$cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} ({$lengthKey}) \"{$printKey}\"</span>" .
                             "<span class=\"equal\"> => </span>" .
-                            "{$typeValue} ({$lengthValue})\"{$printValue}\"</dt><dd class=" . static::$cssClasses['dd'] . "></dd>";
+                            "{$typeValue}({$lengthValue}) <br/></dt>";
                     }
                     else
                     {
-                        static::$html .= "<dt class=" . static::$cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} ({$lengthKey}) \"{$printKey}\"</span>" .
+                        static::$html .= "<dt class=" . static::$cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} {$printKey}</span>" .
                             "<span class=\"equal\"> => </span>" .
-                            "{$typeValue} {$printValue}</dt><dd class=" . static::$cssClasses['dd'] . "></dd>";
+                            "{$typeValue}({$lengthValue}) <br/></dt>";
                     }
+
+                    static::buildFromArrayRecursive($value);
                 }
                 else
                 {
-                    if($typeValue == 'string')
+
+                    $printKey = Html::escape($key);
+                    $printValue = Html::escape($value);
+
+                    $typeKey = gettype($key);
+                    $typeValue = gettype($value);
+
+                    $lengthValue = strlen($value);
+                    $lengthKey = strlen($key);
+
+                    if($typeKey == 'string')
                     {
-                        static::$html .= "<dt class=" . static::$cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} {$printKey}</span>" .
-                            "<span class=\"equal\"> => </span>" .
-                            "{$typeValue} ({$lengthValue})\"{$printValue}\"</dt><dd class=" . static::$cssClasses['dd'] . "></dd>";
+                        if($typeValue == 'string')
+                        {
+                            static::$html .= "<dt class=" . static::$cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} ({$lengthKey}) \"{$printKey}\"</span>" .
+                                "<span class=\"equal\"> => </span>" .
+                                "{$typeValue} ({$lengthValue})\"{$printValue}\"</dt><dd class=" . static::$cssClasses['dd'] . "></dd>";
+                        }
+                        else
+                        {
+                            static::$html .= "<dt class=" . static::$cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} ({$lengthKey}) \"{$printKey}\"</span>" .
+                                "<span class=\"equal\"> => </span>" .
+                                "{$typeValue} {$printValue}</dt><dd class=" . static::$cssClasses['dd'] . "></dd>";
+                        }
                     }
                     else
                     {
-                        static::$html .= "<dt class=" . static::$cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} {$printKey}</span>" .
-                            "<span class=\"equal\"> => </span>" .
-                            "{$typeValue} {$printValue}</dt><dd class=" . static::$cssClasses['dd'] . "></dd>";
+                        if($typeValue == 'string')
+                        {
+                            static::$html .= "<dt class=" . static::$cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} {$printKey}</span>" .
+                                "<span class=\"equal\"> => </span>" .
+                                "{$typeValue} ({$lengthValue})\"{$printValue}\"</dt><dd class=" . static::$cssClasses['dd'] . "></dd>";
+                        }
+                        else
+                        {
+                            static::$html .= "<dt class=" . static::$cssClasses['dt'] . "><span class=\"key-values\">{$typeKey} {$printKey}</span>" .
+                                "<span class=\"equal\"> => </span>" .
+                                "{$typeValue} {$printValue}</dt><dd class=" . static::$cssClasses['dd'] . "></dd>";
+                        }
                     }
                 }
             }
