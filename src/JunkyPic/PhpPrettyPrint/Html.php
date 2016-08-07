@@ -72,13 +72,13 @@ abstract class Html
      * @param bool|false $doubleEncode
      *
      * @return string
-     * @throws OutputException
+     * @throws \Exception
      */
     protected static function escape($string, $quoteStyle = ENT_HTML5, $charset = 'utf-8', $doubleEncode = false)
     {
         if( ! in_array($quoteStyle, static::$quoteFlags))
         {
-            throw new OutputException(vsprintf("Quote style not recognized. Accepted quote styles:" . str_repeat(' %s ', count(static::$quoteFlags)), array_keys(static::$quoteFlags)));
+            throw new \Exception(vsprintf("Quote style not recognized. Accepted quote styles:" . str_repeat(' %s ', count(static::$quoteFlags)), array_keys(static::$quoteFlags)));
         }
 
         return htmlentities($string, $quoteStyle, $charset, $doubleEncode);
