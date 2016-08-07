@@ -56,5 +56,5 @@ class HtmlBuilderTests extends PHPUnit_Framework_TestCase{
         $this->assertEquals($method->invokeArgs(new \JunkyPic\PhpPrettyPrint\HtmlBuilder(), [$string, ENT_QUOTES]), $string);
     }
 
-    
+
 }

@@ -167,7 +167,7 @@ class HtmlBuilder extends Html
 
         $this->object['Class constants'] = ! empty($reflection->getConstants()) ? $reflection->getConstants() : 'Class has no constants';
         // End get info
-        static::buildFromObjectInformationRecursive($this->object);
+        $this->buildFromObjectInformationRecursive($this->object);
     }
 
     /**
@@ -187,7 +187,7 @@ class HtmlBuilder extends Html
                 $this->html .= "<dt class=" . $this->cssClasses['dt'] . "><span class=\"key-values\"> {$printKey}</span>" .
                     "<span class=\"equal\"> => </span>" .
                     "<br/></dt>";
-                static::buildFromObjectInformationRecursive($value);
+                $this->buildFromObjectInformationRecursive($value);
             }
             else
             {
@@ -265,7 +265,7 @@ class HtmlBuilder extends Html
             if(is_callable($value) || is_object($value))
             {
                 $this->html .= "<dt class=" . $this->cssClasses['dt'] . ">Object</dt>";
-                static::buildFromObject($value);
+                $this->buildFromObject($value);
             }
             else
             {
@@ -291,7 +291,7 @@ class HtmlBuilder extends Html
                             "{$typeValue}({$lengthValue}) <br/></dt>";
                     }
 
-                    static::buildFromArrayRecursive($value);
+                    $this->buildFromArrayRecursive($value);
                 }
                 else
                 {
