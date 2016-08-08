@@ -1,6 +1,6 @@
 <?php
 
-namespace JunkyPic\PhpPrettyPrint\Exception;
+namespace Junky\PhpPrettyPrint\Exception;
 
 /**
  * Class OutputException

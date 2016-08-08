@@ -1,6 +1,6 @@
 <?php
 
-namespace JunkyPic\PhpPrettyPrint;
+namespace Junky\Html\PhpPrettyPrint;
 
 /**
  * Class HtmlOutput

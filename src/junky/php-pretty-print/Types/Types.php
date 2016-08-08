@@ -1,5 +1,5 @@
 <?php
-namespace JunkyPic\PhpPrettyPrint;
+namespace Junky\Types\PhpPrettyPrint;
 
 /**
  * Class Types
