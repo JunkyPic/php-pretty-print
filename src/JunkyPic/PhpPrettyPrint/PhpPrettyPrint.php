@@ -49,7 +49,6 @@ class PhpPrettyPrint
 
         static::$debugBacktrace = debug_backtrace();
 
-
         // Parse the debug backtrace until the current file is reached
         foreach(static::$debugBacktrace as $key => $value)
         {
@@ -73,13 +72,19 @@ class PhpPrettyPrint
                     // get the last entry, meaning exactly the class name
                     // and append the method
                     $functionName = end($explode) . '::dump';
+
                     // if the current line contains this method
                     if(strpos($line, $functionName) !== false)
                     {
                         // since only the name of the variable passed in is of interest
                         // we can just replace the method and the trailing );
-                        $argument = str_replace([$functionName . '(', ');', '/', '\\'], '', $line);
-                        static::$info['argument_name'] = preg_replace('~\x{00a0}~', '', preg_replace('/\s+/', '', trim($argument)));
+                        if(strpos($line, $functionName) !== false)
+                        {
+                            $argument = substr($line, strpos($line, $functionName));
+                            $argument = str_replace([ '\\', $functionName . '(', ');', '/',], '', $argument);
+                            static::$info['argument_name'] = preg_replace('~\x{00a0}~', '', preg_replace('/\s+/', '', trim($argument)));
+                        }
+
                         // get other info of interest
                         static::$info['file'] = $value['file'];
                         static::$info['line'] = $value['line'];
