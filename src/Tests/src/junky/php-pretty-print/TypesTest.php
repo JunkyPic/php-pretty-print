@@ -7,28 +7,28 @@ class TypesTest extends PHPUnit_Framework_TestCase{
      */
     public function testTypesAreEqual()
     {
-        $this->assertEquals('boolean', \JunkyPic\PhpPrettyPrint\Types::TYPE_BOOLEAN);
-        $this->assertEquals('integer', \JunkyPic\PhpPrettyPrint\Types::TYPE_INTEGER);
-        $this->assertEquals('float', \JunkyPic\PhpPrettyPrint\Types::TYPE_FLOAT);
-        $this->assertEquals('string', \JunkyPic\PhpPrettyPrint\Types::TYPE_STRING);
-        $this->assertEquals('array', \JunkyPic\PhpPrettyPrint\Types::TYPE_ARRAY);
-        $this->assertEquals('object', \JunkyPic\PhpPrettyPrint\Types::TYPE_OBJECT);
-        $this->assertEquals('resource', \JunkyPic\PhpPrettyPrint\Types::TYPE_RESOURCE);
-        $this->assertEquals('NULL', \JunkyPic\PhpPrettyPrint\Types::TYPE_NULL);
-        $this->assertEquals('callable', \JunkyPic\PhpPrettyPrint\Types::TYPE_CALLABLE_CALLBACK);
+        $this->assertEquals('boolean', \Junky\Types\PhpPrettyPrint\Types::TYPE_BOOLEAN);
+        $this->assertEquals('integer', \Junky\Types\PhpPrettyPrint\Types::TYPE_INTEGER);
+        $this->assertEquals('float', \Junky\Types\PhpPrettyPrint\Types::TYPE_FLOAT);
+        $this->assertEquals('string', \Junky\Types\PhpPrettyPrint\Types::TYPE_STRING);
+        $this->assertEquals('array', \Junky\Types\PhpPrettyPrint\Types::TYPE_ARRAY);
+        $this->assertEquals('object', \Junky\Types\PhpPrettyPrint\Types::TYPE_OBJECT);
+        $this->assertEquals('resource', \Junky\Types\PhpPrettyPrint\Types::TYPE_RESOURCE);
+        $this->assertEquals('NULL', \Junky\Types\PhpPrettyPrint\Types::TYPE_NULL);
+        $this->assertEquals('callable', \Junky\Types\PhpPrettyPrint\Types::TYPE_CALLABLE_CALLBACK);
 
         // check if getType is working properly
-        $this->assertEquals('boolean', \JunkyPic\PhpPrettyPrint\Types::getType(true));
-        $this->assertEquals('integer', \JunkyPic\PhpPrettyPrint\Types::getType(1));
-        $this->assertEquals('integer', \JunkyPic\PhpPrettyPrint\Types::getType(-1));
-        $this->assertEquals('integer', \JunkyPic\PhpPrettyPrint\Types::getType(3232));
+        $this->assertEquals('boolean', \Junky\Types\PhpPrettyPrint\Types::getType(true));
+        $this->assertEquals('integer', \Junky\Types\PhpPrettyPrint\Types::getType(1));
+        $this->assertEquals('integer', \Junky\Types\PhpPrettyPrint\Types::getType(-1));
+        $this->assertEquals('integer', \Junky\Types\PhpPrettyPrint\Types::getType(3232));
         // Will fail - number is larger than PHP_INT_MAX on x64 systems or 32 for that matter
-        // $this->assertEquals('integer', \JunkyPic\PhpPrettyPrint\Types::getType(9223372036854775809));
-        $this->assertEquals('float', \JunkyPic\PhpPrettyPrint\Types::getType(1.1));
-        $this->assertEquals('string', \JunkyPic\PhpPrettyPrint\Types::getType('string'));
-        $this->assertEquals('array', \JunkyPic\PhpPrettyPrint\Types::getType([1, 'string']));
-        $this->assertEquals('object', \JunkyPic\PhpPrettyPrint\Types::getType(new DateTime()));
-        $this->assertEquals('NULL', \JunkyPic\PhpPrettyPrint\Types::getType(NULL));
-        $this->assertEquals('callable', \JunkyPic\PhpPrettyPrint\Types::getType(function(){}));
+        // $this->assertEquals('integer', \Junky\Types\PhpPrettyPrint\Types::getType(9223372036854775809));
+        $this->assertEquals('float', \Junky\Types\PhpPrettyPrint\Types::getType(1.1));
+        $this->assertEquals('string', \Junky\Types\PhpPrettyPrint\Types::getType('string'));
+        $this->assertEquals('array', \Junky\Types\PhpPrettyPrint\Types::getType([1, 'string']));
+        $this->assertEquals('object', \Junky\Types\PhpPrettyPrint\Types::getType(new DateTime()));
+        $this->assertEquals('NULL', \Junky\Types\PhpPrettyPrint\Types::getType(NULL));
+        $this->assertEquals('callable', \Junky\Types\PhpPrettyPrint\Types::getType(function(){}));
     }
 }

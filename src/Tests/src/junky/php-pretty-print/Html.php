@@ -9,7 +9,7 @@ class HtmlBuilderTests extends PHPUnit_Framework_TestCase{
      */
     public function assertHtmlBuilderQuoteFlags()
     {
-        $htmlBuilderReflection = new ReflectionClass(new \JunkyPic\PhpPrettyPrint\HtmlBuilder());
+        $htmlBuilderReflection = new ReflectionClass(new \Junky\Html\PhpPrettyPrint\HtmlBuilder());
 
         $this->assertArrayHasKey('ENT_COMPAT', (array)$htmlBuilderReflection->getProperty('quoteFlags'));
         $this->assertArrayHasKey('ENT_QUOTES', (array)$htmlBuilderReflection->getProperty('quoteFlags'));
@@ -46,14 +46,14 @@ class HtmlBuilderTests extends PHPUnit_Framework_TestCase{
 
     public function assertHtmlBuilderEscape()
     {
-        $method = new ReflectionMethod(\JunkyPic\PhpPrettyPrint\HtmlBuilder::class, 'escape');
+        $method = new ReflectionMethod(\Junky\Html\PhpPrettyPrint\HtmlBuilder::class, 'escape');
         $method->setAccessible(true);
 
         $string = "#000' onload='alert(document.cookie)";
-        $this->assertEquals($method->invokeArgs(new \JunkyPic\PhpPrettyPrint\HtmlBuilder(), [$string]), $string);
+        $this->assertEquals($method->invokeArgs(new \Junky\Html\PhpPrettyPrint\HtmlBuilder(), [$string]), $string);
 
         $string = "A 'quote' is <b>bold</b>";
-        $this->assertEquals($method->invokeArgs(new \JunkyPic\PhpPrettyPrint\HtmlBuilder(), [$string, ENT_QUOTES]), $string);
+        $this->assertEquals($method->invokeArgs(new \Junky\Html\PhpPrettyPrint\HtmlBuilder(), [$string, ENT_QUOTES]), $string);
     }
 
 
