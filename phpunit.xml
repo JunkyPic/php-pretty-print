@@ -2,7 +2,6 @@
 <phpunit
         bootstrap="./vendor/autoload.php"
         backupStaticAttributes="false"
-
         cacheTokens="false"
         colors="false"
         convertErrorsToExceptions="true"
@@ -11,17 +10,14 @@
         forceCoversAnnotation="false"
         mapTestClassNameToCoveredClassName="false"
         printerClass="PHPUnit_TextUI_ResultPrinter"
-
         processIsolation="false"
         stopOnError="false"
         stopOnFailure="false"
         stopOnIncomplete="false"
         stopOnSkipped="false"
         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
-
         verbose="true"
 >
-
     <testsuites>
         <testsuite name="AllTests">
             <directory>./src/Tests</directory>

@@ -56,6 +56,4 @@ class HtmlBuilderTest extends PHPUnit_Framework_TestCase{
         $string = "A 'quote' is <b>bold</b>";
         $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$string]), 'A \'quote\' is &lt;b&gt;bold&lt;/b&gt;');
     }
-
-
 }
