@@ -91,10 +91,6 @@ class PhpPrettyPrint
                 }
                 fclose($file);
             }
-            else
-            {
-                continue;
-            }
         }
 
         static::$output .= HtmlBuilder::create()->getHtml($dump, Types::getType($dump), $options);
