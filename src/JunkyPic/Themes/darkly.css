@@ -11,9 +11,16 @@ pre {
     white-space: -o-pre-wrap;    /* Opera 7 */
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
-.d-term{
+.d-term,
+.css-type-boolean,
+.css-type-resource,
+.css-type-null,
+.css-type-float,
+.css-type-string,
+.css-type-integer {
     color:#40c133;
 }
+
 .css-array-keys{
     color: #9876AA;
 }
