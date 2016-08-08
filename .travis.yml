@@ -5,4 +5,4 @@ before_install:
   - composer self-update
 install:
 - composer install
-- compose dump-autoload -o
+- composer dump-autoload -o
