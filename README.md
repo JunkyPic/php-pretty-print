@@ -5,7 +5,7 @@ A simple dumper for PHP in a human readable format
 
 ##Instalation
 
-```composer require junky-pic/php-pretty-print```
+```composer require junky-pic/php-pretty-print dev-master```
 
 ##Works the same way as `print_r()` but with more information
 ###Can traverse, and provide information, on anything
