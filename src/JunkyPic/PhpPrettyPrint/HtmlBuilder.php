@@ -79,7 +79,7 @@ class HtmlBuilder extends Html
         $stringLength = strlen($param);
 
         $this->html .=
-            "<dd class=" . "string-color " . $this->cssClasses['dd'] . ">" .
+            "<dd class=" . $this->cssClasses['dd'] . ">" .
                 "(" . $stringLength . ") " .
                 $this->escape($param) .
             "</dd>";
