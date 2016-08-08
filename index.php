@@ -5,6 +5,8 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Junky\PhpPrettyPrint\PhpPrettyPrint;
+
 $test = [
     'string'             => 'Lorem',
     'integer'            => 1,
@@ -24,4 +26,4 @@ Pellentesque elementum tortor nibh, non pellentesque augue efficitur a. Fusce id
     },
 ];
 
-\Junky\PhpPrettyPrint\PhpPrettyPrint::dump($test);
+PhpPrettyPrint::dump($test);
