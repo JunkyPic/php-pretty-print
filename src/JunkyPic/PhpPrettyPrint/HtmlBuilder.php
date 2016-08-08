@@ -47,11 +47,19 @@ class HtmlBuilder extends Html
         switch($type)
         {
             case Types::TYPE_BOOLEAN:
+                $this->buildFromBoolean($param);
+                break;
             case Types::TYPE_INTEGER:
+                $this->buildFromInteger($param);
+                break;
             case Types::TYPE_FLOAT:
+                $this->buildFromFloat($param);
+                break;
             case Types::TYPE_RESOURCE:
+                $this->buildFromResource($param);
+                break;
             case Types::TYPE_NULL:
-                $this->buildFromString($param, $options);
+                $this->buildFromNull($param);
                 break;
             case Types::TYPE_ARRAY:
                 $this->buildFromArray($param, $options);
@@ -59,7 +67,8 @@ class HtmlBuilder extends Html
             case Types::TYPE_OBJECT:
                 // Parameter $options is purposely left out of this function
                 // objects can be internal and we don't want to truncate
-                // any sort of internal information provided
+                // any sort of internal information provided in case
+                // the excerpt is present in the options array
                 $this->buildFromObject($param);
                 break;
             case Types::TYPE_STRING:
@@ -70,6 +79,71 @@ class HtmlBuilder extends Html
         $this->html .= "</dl>";
 
         return $this->html;
+    }
+
+    /**
+     * @param $param
+     *
+     * @throws \Exception
+     */private function buildFromResource($param)
+    {
+        $this->html .=
+            "<dd class=" . $this->cssClasses['dd'] . ">" .
+            Types::TYPE_RESOURCE . " " .
+            $this->escape($param) .
+            "</dd>";
+    }
+
+    /**
+     * @param $param
+     *
+     * @throws \Exception
+     */private function buildFromNull($param)
+    {
+        $this->html .=
+            "<dd class=" . $this->cssClasses['dd'] . ">" .
+            Types::TYPE_NULL . " " .
+            $this->escape($param) .
+            "</dd>";
+    }
+
+    /**
+     * @param $param
+     *
+     * @throws \Exception
+     */private function buildFromFloat($param)
+    {
+        $this->html .=
+            "<dd class=" . $this->cssClasses['dd'] . ">" .
+            Types::TYPE_FLOAT . " " .
+            $this->escape($param) .
+            "</dd>";
+    }
+
+    /**
+     * @param $param
+     *
+     * @throws \Exception
+     */private function buildFromInteger($param)
+    {
+        $this->html .=
+            "<dd class=" . $this->cssClasses['dd'] . ">" .
+            Types::TYPE_INTEGER . " " .
+            $this->escape($param) .
+            "</dd>";
+    }
+
+    /**
+     * @param $param
+     *
+     * @throws \Exception
+     */private function buildFromBoolean($param)
+    {
+        $this->html .=
+            "<dd class=" . $this->cssClasses['dd'] . ">" .
+            Types::TYPE_BOOLEAN . " " .
+            $this->escape($param).
+            "</dd>";
     }
 
     /**
