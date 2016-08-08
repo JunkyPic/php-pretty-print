@@ -1,7 +1,7 @@
 <?php
 
 namespace Junky\PhpPrettyPrint;
-use Junky\Html\PhpPrettyPrint\HtmlBuilder;
+use Junky\PhpPrettyPrint\Html\HtmlBuilder;
 
 /**
  * Class PhpPrettyPrint

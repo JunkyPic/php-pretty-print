@@ -1,6 +1,6 @@
 <?php
 
-namespace Junky\Html\PhpPrettyPrint;
+namespace Junky\PhpPrettyPrint\Html;
 
 /**
  * Class HtmlOutput
@@ -89,7 +89,7 @@ abstract class Html
      * @return string
      * @throws \Exception
      */
-    protected function escape($string, $quoteStyle = ENT_HTML5, $charset = 'utf-8', $doubleEncode = false)
+    protected function escape($string, $quoteStyle = ENT_SUBSTITUTE, $charset = 'utf-8', $doubleEncode = false)
     {
         if( ! in_array($quoteStyle, $this->quoteFlags))
         {

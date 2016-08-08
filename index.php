@@ -25,5 +25,5 @@ Pellentesque elementum tortor nibh, non pellentesque augue efficitur a. Fusce id
     {
     },
 ];
-
-PhpPrettyPrint::dump($test);
+$string = "#000' onload='alert(document.cookie)";
+PhpPrettyPrint::dump($string);

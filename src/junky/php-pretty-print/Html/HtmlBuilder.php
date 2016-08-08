@@ -1,6 +1,6 @@
 <?php
 
-namespace Junky\Html\PhpPrettyPrint;
+namespace Junky\PhpPrettyPrint\Html;
 use Junky\PhpPrettyPrint\Types;
 
 /**
