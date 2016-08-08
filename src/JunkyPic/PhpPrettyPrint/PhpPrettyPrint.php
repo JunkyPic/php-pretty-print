@@ -95,25 +95,7 @@ class PhpPrettyPrint
             }
         }
 
-        switch(Types::getType($dump))
-        {
-            case Types::TYPE_BOOLEAN:
-            case Types::TYPE_INTEGER:
-            case Types::TYPE_FLOAT:
-            case Types::TYPE_NULL:
-            case Types::TYPE_STRING:
-                static::$output .= HtmlBuilder::create()->getHtml($dump, Types::getType($dump), $options);
-                break;
-            case Types::TYPE_ARRAY:
-                static::$output .= HtmlBuilder::create()->getHtml($dump, Types::TYPE_ARRAY, $options);
-                break;
-            case Types::TYPE_CALLABLE_CALLBACK:
-                static::$output .= HtmlBuilder::create()->getHtml($dump, Types::TYPE_CALLABLE_CALLBACK, $options);
-                break;
-            case Types::TYPE_OBJECT:
-                static::$output .= HtmlBuilder::create()->getHtml($dump, Types::TYPE_OBJECT, $options);
-                break;
-        }
+        static::$output .= HtmlBuilder::create()->getHtml($dump, Types::getType($dump), $options);
 
         static::$output .= "</div>";
 
