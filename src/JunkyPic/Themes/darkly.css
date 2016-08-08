@@ -4,6 +4,13 @@ html, body{
 .pretty-print{
     color: #fff;
 }
+pre {
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
 .d-term{
     color:#40c133;
 }
@@ -30,14 +37,4 @@ html, body{
 .github{
     color:#ffffff;
     text-decoration: none;
-}
-
-.string-color{
-    color:#40c133;
-    white-space: pre-wrap;       /* CSS 3 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
-    padding-right: 20px;
 }
