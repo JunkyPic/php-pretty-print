@@ -15,19 +15,15 @@ class PhpPrettyPrint
     private static $debugBacktrace;
 
     /**
-     * @var array
-     */
-    private static $info = [];
-
-    /**
      * @var string
      */
     private static $output = "<div class=\"pretty-print\">";
 
     /**
      * @param $dump
+     * @param array $options
      */
-    public static function dump($dump)
+    public static function dump($dump, array $options = ['excerpt' => true])
     {
         $settings = json_decode(file_get_contents(__DIR__ . '/../../settings.json'), true);
 
@@ -82,12 +78,12 @@ class PhpPrettyPrint
                         {
                             $argument = substr($line, strpos($line, $functionName));
                             $argument = str_replace([ '\\', $functionName . '(', ');', '/',], '', $argument);
-                            static::$info['argument_name'] = preg_replace('~\x{00a0}~', '', preg_replace('/\s+/', '', trim($argument)));
+                            $options['argument_name'] = preg_replace('~\x{00a0}~', '', preg_replace('/\s+/', '', trim($argument)));
                         }
 
                         // get other info of interest
-                        static::$info['file'] = $value['file'];
-                        static::$info['line'] = $value['line'];
+                        $options['file'] = $value['file'];
+                        $options['line'] = $value['line'];
                         break;
                     }
                 }
@@ -106,16 +102,16 @@ class PhpPrettyPrint
             case Types::TYPE_FLOAT:
             case Types::TYPE_NULL:
             case Types::TYPE_STRING:
-                static::$output .= HtmlBuilder::create()->getHtml($dump, Types::getType($dump), static::$info);
+                static::$output .= HtmlBuilder::create()->getHtml($dump, Types::getType($dump), $options);
                 break;
             case Types::TYPE_ARRAY:
-                static::$output .= HtmlBuilder::create()->getHtml($dump, Types::TYPE_ARRAY, static::$info);
+                static::$output .= HtmlBuilder::create()->getHtml($dump, Types::TYPE_ARRAY, $options);
                 break;
             case Types::TYPE_CALLABLE_CALLBACK:
-                static::$output .= HtmlBuilder::create()->getHtml($dump, Types::TYPE_CALLABLE_CALLBACK, static::$info);
+                static::$output .= HtmlBuilder::create()->getHtml($dump, Types::TYPE_CALLABLE_CALLBACK, $options);
                 break;
             case Types::TYPE_OBJECT:
-                static::$output .= HtmlBuilder::create()->getHtml($dump, Types::TYPE_OBJECT, static::$info);
+                static::$output .= HtmlBuilder::create()->getHtml($dump, Types::TYPE_OBJECT, $options);
                 break;
         }
 

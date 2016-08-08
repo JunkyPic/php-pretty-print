@@ -43,12 +43,17 @@ abstract class Html
 
     /**
      * @param $string
+     * @param array $options
      *
      * @return string
      */
-    protected function getExcerpt($string)
+    protected function getExcerpt($string, array $options)
     {
-        return (string) "(" . substr($string, 0, 100) . "...)";
+        if(isset($options['excerpt']) && is_integer($options['excerpt']))
+        {
+            return substr($string, 0, (int)$options['excerpt']) . "...";
+        }
+        return substr($string, 0, 250) . "...";
     }
 
     /**
@@ -77,7 +82,7 @@ abstract class Html
     {
         if( ! in_array($quoteStyle, $this->quoteFlags))
         {
-            throw new \Exception(vsprintf("Quote style not recognized. Accepted quote styles:" . str_repeat(' %s ', count(static::$quoteFlags)), array_keys(static::$quoteFlags)));
+            throw new \Exception(vsprintf("Quote style not recognized. Accepted quote styles:" . str_repeat(' %s ', count($this->quoteFlags)), array_keys($this->quoteFlags)));
         }
 
         return htmlentities($string, $quoteStyle, $charset, $doubleEncode);

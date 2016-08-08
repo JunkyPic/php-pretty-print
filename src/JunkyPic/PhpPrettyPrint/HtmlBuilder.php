@@ -31,17 +31,17 @@ class HtmlBuilder extends Html
     /**
      * @param       $param
      * @param       $type
-     * @param array $info
+     * @param array $options
      *
      * @return string
      */
-    public function getHtml($param, $type, array $info)
+    public function getHtml($param, $type, array $options)
     {
-        $this->buildHeader($info);
+        $this->buildHeader($options);
         $this->html .=
                 "<dl class=\"php-pretty-print-info-parent\">" .
                     "<dt>" .
-                    "<span class=\"argument-and-type\">{$info['argument_name']} ({$type})</span>" .
+                    "<span class=\"argument-and-type\">{$options['argument_name']} ({$type})</span>" .
                     "</dt>";
                     // tag closes bellow
         switch($type)
@@ -51,16 +51,19 @@ class HtmlBuilder extends Html
             case Types::TYPE_FLOAT:
             case Types::TYPE_RESOURCE:
             case Types::TYPE_NULL:
-                $this->buildFromString($param);
+                $this->buildFromString($param, $options);
                 break;
             case Types::TYPE_ARRAY:
-                $this->buildFromArray($param);
+                $this->buildFromArray($param, $options);
                 break;
             case Types::TYPE_OBJECT:
+                // Parameter $options is purposely left out of this function
+                // objects can be internal and we don't want to truncate
+                // any sort of internal information provided
                 $this->buildFromObject($param);
                 break;
             case Types::TYPE_STRING:
-                $this->buildFromString($param);
+                $this->buildFromString($param, $options);
                 break;
         }
 
@@ -71,17 +74,18 @@ class HtmlBuilder extends Html
 
     /**
      * @param $param
+     * @param $options
      *
      * @throws \Exception
      */
-    private function buildFromString($param)
+    private function buildFromString($param, array $options)
     {
         $stringLength = strlen($param);
 
         $this->html .=
             "<dd class=" . $this->cssClasses['dd'] . ">" .
-                "(" . $stringLength . ") " .
-                $this->escape($param) .
+            "(" . $stringLength . ") " .
+            $this->getExcerpt($this->escape($param), $options) .
             "</dd>";
     }
 
@@ -179,7 +183,7 @@ class HtmlBuilder extends Html
         {
             if(Types::getType($value) === Types::TYPE_ARRAY)
             {
-                $printKey = Html::escape($key);
+                $printKey = $this->escape($key);
                 $this->html .=
                     "<dt class=" . $this->cssClasses['dt'] . ">" .
                     "<span class=\"css-array-keys\"> {$printKey}</span>" .
@@ -190,8 +194,8 @@ class HtmlBuilder extends Html
             }
             else
             {
-                $printKey = Html::escape($key);
-                $printValue = Html::escape($value);
+                $printKey = $this->escape($key);
+                $printValue = $this->escape($value);
                 $this->html .=
                     "<dt class=" . $this->cssClasses['dt'] . ">" .
                     "<span class=\"css-array-keys\"> {$printKey}</span>" .
@@ -206,16 +210,16 @@ class HtmlBuilder extends Html
     }
 
     /**
-     * @param array $info
+     * @param array $options
      */
-    private function buildHeader(array $info)
+    private function buildHeader(array $options)
     {
         $this->html .=
             "<div class=\"php-pretty-print-header\">" .
                 "<dl>" .
                     "<dt>Where was PhpPrettyPrint::dump() called?</dt>" .
-                    "<dd>File: {$info['file']}</dd>" .
-                    "<dd>Line: {$info['line']}</dd>" .
+                    "<dd>File: {$options['file']}</dd>" .
+                    "<dd>Line: {$options['line']}</dd>" .
                 "</dl>" .
             "</div>" .
             "<hr>";
@@ -223,18 +227,20 @@ class HtmlBuilder extends Html
 
     /**
      * @param array $array
+     * @param array $options
      */
-    private function buildFromArray(array $array)
+    private function buildFromArray(array $array, array $options)
     {
-        $this->buildFromArrayRecursive($array);
+        $this->buildFromArrayRecursive($array, $options);
     }
 
     /**
      * @param $array
+     * @param $options
      *
      * @throws \Exception
      */
-    private function buildFromArrayRecursive($array)
+    private function buildFromArrayRecursive($array, array $options)
     {
         $this->html .= "<dd class=" . $this->cssClasses['dd'] . ">";
         $this->html .= "<dl class=" . $this->cssClasses['dl'] . ">";
@@ -255,7 +261,7 @@ class HtmlBuilder extends Html
 
                     $lengthValue = count($value);
 
-                    $printKey = Html::escape($key);
+                    $printKey = $this->getExcerpt($this->escape($key), $options);
 
                     $lengthKey = strlen($key);
 
@@ -280,12 +286,12 @@ class HtmlBuilder extends Html
                             "</dt>";
                     }
 
-                    $this->buildFromArrayRecursive($value);
+                    $this->buildFromArrayRecursive($value, $options);
                 }
                 else
                 {
-                    $printKey = Html::escape($key);
-                    $printValue = Html::escape($value);
+                    $printKey = $this->escape($key);
+                    $printValue = $this->getExcerpt($this->escape($value), $options);
 
                     $typeKey = gettype($key);
                     $typeValue = gettype($value);
