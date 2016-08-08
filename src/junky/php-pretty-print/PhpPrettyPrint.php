@@ -38,7 +38,7 @@ class PhpPrettyPrint
             die($error);
         }
 
-        $css = isset($settings['theme']) ? file_get_contents(__DIR__ . '/../Themes/' . $settings['theme'] . '.css') : '';
+        $css = isset($settings['theme']) ? file_get_contents(__DIR__ . '/Themes/' . $settings['theme'] . '.css') : '';
 
         if(isset($settings['remove-git-link']) && $settings['remove-git-link'] == false)
         {

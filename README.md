@@ -3,6 +3,8 @@ A simple dumper for PHP in a human readable format
 
 [![Build Status](https://travis-ci.org/JunkyPic/php-pretty-print.png)](https://travis-ci.org/JunkyPic/php-pretty-print)
 
+#THIS IS IN ALPHA. EXPECT THINGS TO BREAK. OFTEN!
+
 ##Instalation
 
 ```composer require junky-pic/php-pretty-print dev-master```
