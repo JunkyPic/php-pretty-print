@@ -53,8 +53,15 @@ abstract class Html
         {
             return substr($string, 0, (int)$options['excerpt']) . "...";
         }
-
-        return substr($string, 0, 250) . "...";
+        elseif(isset($options['excerpt']) && is_bool($options['excerpt']))
+        {
+            if(true === $options['excerpt'])
+            {
+                return substr($string, 0, 250) . "...";
+            }
+        }
+    
+        return $string;
     }
 
     /**
