@@ -49,18 +49,21 @@ abstract class Html
      */
     protected function getExcerpt($string, array $options = ['excerpt' => false])
     {
+        if(isset($options['excerpt']) && false === $options['excerpt'])
+        {
+            return $string;
+        }
+
+        if(isset($options['excerpt']) && true === $options['excerpt'])
+        {
+            return substr($string, 0, 250) . "...";
+        }
+
         if(isset($options['excerpt']) && ((int)$options['excerpt'] === $options['excerpt']))
         {
             return substr($string, 0, (int)$options['excerpt']) . "...";
         }
-        elseif(isset($options['excerpt']) && is_bool($options['excerpt']))
-        {
-            if(true === $options['excerpt'])
-            {
-                return substr($string, 0, 250) . "...";
-            }
-        }
-    
+
         return $string;
     }
 
