@@ -403,7 +403,7 @@ class HtmlBuilder extends Html
 
                     $lengthValue = count($value);
 
-                    $printKey = $this->getExcerpt($this->escape($key), $options);
+                    $printKey = $this->escape($key);
 
                     $lengthKey = strlen($key);
 
@@ -478,6 +478,7 @@ class HtmlBuilder extends Html
                         }
                         else
                         {
+
                             $this->html .=
                                 "<dt class=\"" . $this->cssClasses['dt'] . "\">
                                 <span class=\"css-array-keys\">{$typeKey} {$printKey}</span>" .
