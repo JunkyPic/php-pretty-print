@@ -45,7 +45,7 @@ $options = [
 ```
 Will output something like this:
 
-![Alt text](http://i.imgur.com/3fpVTL5.jpg "Output")
+![Alt text](http://i.imgur.com/GQsQUuC.jpg "Output")
 
 It looks readable and that's about it. No collapse option, no other markup or whatever.
 
