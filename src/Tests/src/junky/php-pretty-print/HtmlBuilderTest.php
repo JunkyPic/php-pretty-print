@@ -75,16 +75,11 @@ class HtmlBuilderTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$really_long_string => strlen($really_long_string)]), strlen($really_long_string));
     }
 
-//      This won't work unfortunately, reflection can't throw exceptions used in the reflected class, as far as I know anyway
-//    /**
-//     * @expectedException \Exception
-//     */
-//    public function testGetExcerptException()
-//    {
-//        $method = new ReflectionMethod(\Junky\PhpPrettyPrint\Html\HtmlBuilder::class, 'getExcerpt');
-//        $method->setAccessible(true);
-//        $method->invokeArgs(new HtmlBuilder(), ['excerpt' => 'string']);
-//    }
+    public function testGetExcerptException()
+    {
+        $class = $this->getMock(\Junky\PhpPrettyPrint\Html\HtmlBuilder::class);
+        $class->method('getExcerpt', ['excerpt' => 'string'])->willThrowException(new Exception());
+    }
 
     public function testCreate()
     {
