@@ -24,7 +24,7 @@ class PhpPrettyPrint
      * @param $dump
      * @param array $options
      */
-    public static function dump($dump, array $options = [])
+    public static function dump($dump, array $options = ['excerpt' => false])
     {
         $settings = json_decode(file_get_contents(__DIR__ . '/../../settings.json'), true);
 

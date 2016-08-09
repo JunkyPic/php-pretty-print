@@ -1,6 +1,7 @@
 <?php
 
 namespace Junky\PhpPrettyPrint\Html;
+use Junky\PhpPrettyPrint\Exception\HtmlBuilderException;
 
 /**
  * Class HtmlOutput
@@ -46,20 +47,23 @@ abstract class Html
      * @param array $options
      *
      * @return string
+     * @throws HtmlBuilderException
      */
     protected function getExcerpt($string, array $options = ['excerpt' => false])
     {
-        if(strlen($string) >= 250)
+        if( ! is_bool($options['excerpt']) && ! is_integer($options['excerpt']))
         {
-            if(isset($options['excerpt']) && true === $options['excerpt'])
-            {
-                return substr($string, 0, 250) . "...";
-            }
+            throw new HtmlBuilderException("Expected boolean or integer got " . gettype($options['excerpt']));
+        }
 
-            if(isset($options['excerpt']) && ((int)$options['excerpt'] === $options['excerpt']))
-            {
-                return substr($string, 0, (int)$options['excerpt']) . "...";
-            }
+        if(isset($options['excerpt']) && true === $options['excerpt'] && strlen($string >= 250))
+        {
+            return substr($string, 0, 250) . "...";
+        }
+
+        if(isset($options['excerpt']) && is_integer($options['excerpt']))
+        {
+            return substr($string, 0, (int)$options['excerpt']) . "...";
         }
 
         return $string;

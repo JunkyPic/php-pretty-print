@@ -56,4 +56,38 @@ class HtmlBuilderTest extends PHPUnit_Framework_TestCase{
         $string = "A 'quote' is <b>bold</b>";
         $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$string]), 'A \'quote\' is &lt;b&gt;bold&lt;/b&gt;');
     }
+
+    public function testGetExcerpt()
+    {
+        $method = new ReflectionMethod(\Junky\PhpPrettyPrint\Html\HtmlBuilder::class, 'getExcerpt');
+        $method->setAccessible(true);
+        $really_long_string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+
+        // Default 250
+        // + 3 trailing dots
+        $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$really_long_string => true]), 253);
+
+        // less than 250
+        $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$really_long_string => 153]), 153);
+
+        // excerpt is false
+        // god damn it phpunit...
+        $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$really_long_string => strlen($really_long_string)]), strlen($really_long_string));
+    }
+
+//      This won't work unfortunately, reflection can't throw exceptions used in the reflected class, as far as I know anyway
+//    /**
+//     * @expectedException \Exception
+//     */
+//    public function testGetExcerptException()
+//    {
+//        $method = new ReflectionMethod(\Junky\PhpPrettyPrint\Html\HtmlBuilder::class, 'getExcerpt');
+//        $method->setAccessible(true);
+//        $method->invokeArgs(new HtmlBuilder(), ['excerpt' => 'string']);
+//    }
+
+    public function testCreate()
+    {
+        $this->assertInstanceOf(HtmlBuilder::class, HtmlBuilder::create());
+    }
 }

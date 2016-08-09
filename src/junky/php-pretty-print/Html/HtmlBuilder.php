@@ -168,7 +168,7 @@ class HtmlBuilder extends Html
      * @param $param
      * @param \ReflectionObject $reflection
      */
-    private function buildFromObject($param, $reflection)
+    private function buildFromObject($param, $reflection = null)
     {
         foreach($param as $key => $value)
         {
