@@ -65,7 +65,7 @@ class HtmlBuilderTest extends PHPUnit_Framework_TestCase{
 
         // Default 250
         // + 3 trailing dots
-        $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$really_long_string => true]), 253);
+        $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$really_long_string => 250]), 250);
 
         // less than 250
         $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$really_long_string => 153]), 153);
