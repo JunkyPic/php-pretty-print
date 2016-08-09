@@ -2,7 +2,7 @@
 /**
  * Just so we're clear on this: Yes, I know private/protected methods should not be tested
  * and if they are tested then it means there's probably something wrong with how the class
- * is built. With that said, just because I shouldn't, won't mean I won't.
+ * is built or how the testes themselfs are written, this was made for fun.
  *
  * https://sebastian-bergmann.de/archives/881-Testing-Your-Privates.html
  */
