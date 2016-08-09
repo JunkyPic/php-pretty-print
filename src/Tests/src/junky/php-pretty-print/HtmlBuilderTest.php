@@ -1,4 +1,12 @@
 <?php
+/**
+ * Just so we're clear on this: Yes, I know private/protected methods should not be tested
+ * and if they are tested then it means there's probably something wrong with how the class
+ * is built. With that said, just because I shouldn't, won't mean I won't.
+ *
+ * https://sebastian-bergmann.de/archives/881-Testing-Your-Privates.html
+ */
+
 use \Junky\PhpPrettyPrint\Html\HtmlBuilder;
 
 class HtmlBuilderTest extends PHPUnit_Framework_TestCase{
