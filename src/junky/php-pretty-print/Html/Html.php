@@ -56,14 +56,14 @@ abstract class Html
             throw new HtmlBuilderException("Expected boolean or integer got " . gettype($options['excerpt']));
         }
 
-        if(isset($options['excerpt']) && true === $options['excerpt'] || strlen($string >= 250))
+        if(isset($options['excerpt']) && true === $options['excerpt'])
         {
             return substr($string, 0, 250);
         }
 
         if(isset($options['excerpt']) && is_integer($options['excerpt']))
         {
-            return substr($string, 0, 250);
+            return substr($string, 0, $options['excerpt']);
         }
 
         return $string;
