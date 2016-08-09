@@ -31,9 +31,18 @@ $test = [
     },
 ];
 
-\JunkyPic\PhpPrettyPrint\PhpPrettyPrint::dump($test);
+\JunkyPic\PhpPrettyPrint\PhpPrettyPrint::dump($test, <optional> $options);
 ```
 
+```$options = [
+    'excerpt' => false, // default
+    //OR
+    //'excerpt' => true, // defaults to 250 characters
+    //OR
+    //'excerpt' => 100, // get an excerpt of anything that's a string limited to 100 characters
+];
+
+```
 Will output something like this:
 
 ![Alt text](http://i.imgur.com/3fpVTL5.jpg "Output")

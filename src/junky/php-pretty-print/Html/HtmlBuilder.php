@@ -40,9 +40,9 @@ class HtmlBuilder extends Html
     {
         $this->buildHeader($options);
         $this->html .=
-                "<dl class=\"php-pretty-print-info-parent\">" .
+                "<dl class=\"css-parent\">" .
                     "<dt>" .
-                    "<span class=\"argument-and-type\">{$options['argument_name']} ({$type})</span>" .
+                    "<span class=\"css-argument-and-type\">{$options['argument_name']} ({$type})</span>" .
                     "</dt>";
                     // tag closes bellow
         switch($type)
@@ -166,91 +166,117 @@ class HtmlBuilder extends Html
 
     /**
      * @param $param
+     * @param \ReflectionObject $reflection
      */
-    private function buildFromObject($param)
+    private function buildFromObject($param, $reflection)
     {
-        $reflection = new \ReflectionObject($param);
+        foreach($param as $key => $value)
+        {
+            $this->object['Object default'][$key] = $value;
+        }
 
         // Get info on the object
-        $this->object['In namespace'] = $reflection->inNamespace() ? 'Yes' : 'No';
+        $this->object['Reflection']['In namespace'] = $reflection->inNamespace() ? 'Yes' : 'No';
         if($reflection->inNamespace())
         {
             $this->object['Class namespace'] = $reflection->getNamespaceName();
         }
 
-        $this->object['Class name'] = $reflection->getName();
+        $this->object['Reflection']['Class name'] = $reflection->getName();
 
-        $this->object['Is internal'] = $reflection->isInternal() ? 'Yes' : 'No';
-        $this->object['Is iterable'] = $reflection->isIterateable() ? 'Yes' : 'No';
-        $this->object['Is abstract'] = $reflection->isAbstract() ? 'Yes' : 'No';
-        $this->object['Is final'] = $reflection->isFinal() ? 'Yes' : 'No';
-        $this->object['Is user defined'] = $reflection->isUserDefined() ? 'Yes' : 'No';
-        $this->object['Is instantiable'] = $reflection->isInstantiable() ? 'Yes' : 'No';
-        $this->object['Is clonable'] = $reflection->isCloneable() ? 'Yes' : 'No';
-        $this->object['Is interface'] = $reflection->isInterface() ? 'Yes' : 'No';
-        $this->object['Class constants'] = ! empty($reflection->getConstants()) ? $reflection->getConstants() : 'Class has no constants';
-        $this->object['Class static properties'] = ! empty($reflection->getStaticProperties()) ? $reflection->getStaticProperties() : 'Class has no static properties';
-        $this->object['Class default properties'] = ! empty($reflection->getDefaultProperties()) ? $reflection->getDefaultProperties() : 'Class has no default properties';
+        $this->object['Reflection']['Is internal'] = $reflection->isInternal() ? 'Yes' : 'No';
+        $this->object['Reflection']['Is iterable'] = $reflection->isIterateable() ? 'Yes' : 'No';
+        $this->object['Reflection']['Is abstract'] = $reflection->isAbstract() ? 'Yes' : 'No';
+        $this->object['Reflection']['Is final'] = $reflection->isFinal() ? 'Yes' : 'No';
+        $this->object['Reflection']['Is user defined'] = $reflection->isUserDefined() ? 'Yes' : 'No';
+        $this->object['Reflection']['Is instantiable'] = $reflection->isInstantiable() ? 'Yes' : 'No';
+        $this->object['Reflection']['Is clonable'] = $reflection->isCloneable() ? 'Yes' : 'No';
+        $this->object['Reflection']['Is interface'] = $reflection->isInterface() ? 'Yes' : 'No';
+        $this->object['Reflection']['Class constants'] = ! empty($reflection->getConstants()) ? $reflection->getConstants() : 'Class has no constants';
+        $this->object['Reflection']['Class static properties'] = ! empty($reflection->getStaticProperties()) ? $reflection->getStaticProperties() : 'Class has no static properties';
+        $this->object['Reflection']['Class default properties'] = ! empty($reflection->getDefaultProperties()) ? $reflection->getDefaultProperties() : 'Class has no default properties';
 
         if(null === $reflection->getConstructor())
         {
-            $this->object['Class construct'] = 'Class has no construct.';
+            $this->object['Reflection']['Class construct'] = 'Class has no construct.';
         }
         else
         {
-            $this->object['Class construct'] = $reflection->getConstructor();
+            $this->object['Reflection']['Class construct'] = $reflection->getConstructor();
         }
 
-        $this->object['Class interfaces'] = ! empty($reflection->getInterfaces()) ? $reflection->getInterfaces() : 'Class implements no interfaces';
-        $this->object['Class traits'] = ! empty($reflection->getTraits()) ? $reflection->getTraits() : 'Class has no traits';
-        $this->object['Class parent'] = ($reflection->getParentClass()) !== false ? $reflection->getParentClass() : 'Class has no parent';
-
-        if(false === $reflection->getFileName())
-        {
-            $this->object['Defined in'] = 'Class is internal, no definition to provide.';
-        }
-        else
-        {
-            $this->object['Defined in'] = $reflection->getFileName();
-        }
+        $this->object['Reflection']['Class interfaces'] = ! empty($reflection->getInterfaces()) ? $reflection->getInterfaces() : 'Class implements no interfaces';
+        $this->object['Reflection']['Class traits'] = ! empty($reflection->getTraits()) ? $reflection->getTraits() : 'Class has no traits';
+        $this->object['Reflection']['Class parent'] = ($reflection->getParentClass()) !== false ? $reflection->getParentClass() : 'Class has no parent';
 
         if(false === $reflection->getFileName())
         {
-            $this->object['Start line'] = 'Class is internal, no start line to provide.';
+            $this->object['Reflection']['Defined in'] = 'Class is internal, no definition to provide.';
         }
         else
         {
-            $this->object['Start line'] = $reflection->getFileName();
+            $this->object['Reflection']['Defined in'] = $reflection->getFileName();
+        }
+
+        if(false === $reflection->getFileName())
+        {
+            $this->object['Reflection']['Start line'] = 'Class is internal, no start line to provide.';
+        }
+        else
+        {
+            $this->object['Reflection']['Start line'] = $reflection->getFileName();
         }
 
         if(false === $reflection->getEndLine())
         {
-            $this->object['End line'] = 'Class is internal, no end line to provide.';
+            $this->object['Reflection']['End line'] = 'Class is internal, no end line to provide.';
         }
         else
         {
-            $this->object['End line'] = $reflection->getEndLine();
+            $this->object['Reflection']['End line'] = $reflection->getEndLine();
         }
 
         if(false === $reflection->getDocComment())
         {
-            $this->object['Doc comments'] = 'No documents to provide.';
+            $this->object['Reflection']['Doc comments'] = 'No documents to provide.';
         }
         else
         {
-            $this->object['Doc comments'] = $reflection->getDocComment();
+            $this->object['Reflection']['Doc comments'] = $reflection->getDocComment();
         }
 
         // End get info
-        $this->buildFromObjectInformationRecursive($this->object);
+        $this->html .= "<span class=\"js-parent-object\">";
+
+        if( ! empty($this->object['Object default']))
+        {
+            $this->html .= "<div class=\"js-object-default-tab \"><button class=\"button-reflection button\">Show reflection</button></div>";
+
+            $this->html .= "<div class=\"js-object-default \">";
+            $this->buildFromObjectIterationInformationRecursive($this->object['Object default']);
+            $this->html .= "</div>";
+        }
+
+        if($param instanceof \Closure)
+        {
+            $this->html .= "<div class=\"js-object-default-tab \"><button class=\"button-reflection button\">Show reflection</button></div>";
+
+            $this->html .= "<div class=\"js-object-default \">";
+            $this->html .= "<span class=\"css-type-string\">Nothing here...</span>";
+            $this->html .= "</div>";
+        }
+
+        $this->html .= "<div class=\"js-object-reflection-tab hide\"><button class=\"button-class-default button\">Show default</button></div>";
+
+        $this->html .= "<div class=\"js-object-reflection hide\">";
+        $this->buildFromObjectReflectionInformationRecursive($this->object['Reflection']);
+        $this->html .= "</div>";
+        $this->html .= "</span>";
+
+        $this->object = [];
     }
 
-    /**
-     * @param array $array
-     *
-     * @throws \Exception
-     */
-    private function buildFromObjectInformationRecursive(array $array)
+    private function buildFromObjectIterationInformationRecursive($array)
     {
         $this->html .= "<dd class=\"" . $this->cssClasses['dd'] . "\">";
         $this->html .= "<dl class=\"" . $this->cssClasses['dl'] . "\">";
@@ -265,7 +291,46 @@ class HtmlBuilder extends Html
                     "<span class=\"css-pointer\"> => </span>" .
                     "<br/>" .
                     "</dt>";
-                $this->buildFromObjectInformationRecursive($value);
+                $this->buildFromObjectIterationInformationRecursive($value);
+            }
+            else
+            {
+                $printKey = $this->escape($key);
+                $printValue = $this->escape($value);
+                $this->html .=
+                    "<dt class=\"" . $this->cssClasses['dt'] . "\">" .
+                    "<span class=\"css-array-keys\"> {$printKey}</span>" .
+                    "<span class=\"css-pointer\"> =></span> " .
+                    "<span class=\"css-array-values\">{$printValue}</span>" .
+                    "</dt>" .
+                    "<dd class=\"" . $this->cssClasses['dd'] . "\">";
+            }
+        }
+        $this->html .= "</dl>";
+        $this->html .= "</dd>";
+    }
+
+    /**
+     * @param array $array
+     *
+     * @throws \Exception
+     */
+    private function buildFromObjectReflectionInformationRecursive($array)
+    {
+        $this->html .= "<dd class=\"" . $this->cssClasses['dd'] . "\">";
+        $this->html .= "<dl class=\"" . $this->cssClasses['dl'] . "\">";
+        foreach($array as $key => $value)
+        {
+            if(Types::getType($value) === Types::TYPE_ARRAY)
+            {
+                $printKey = $this->escape($key);
+                $this->html .=
+                    "<dt class=\"" . $this->cssClasses['dt'] . "\">" .
+                    "<span class=\"css-array-keys\"> {$printKey}</span>" .
+                    "<span class=\"css-pointer\"> => </span>" .
+                    "<br/>" .
+                    "</dt>";
+                $this->buildFromObjectReflectionInformationRecursive($value);
             }
             else
             {
@@ -290,7 +355,7 @@ class HtmlBuilder extends Html
     private function buildHeader(array $options)
     {
         $this->html .=
-            "<div class=\"php-pretty-print-header\">" .
+            "<div class=\"css-header\">" .
                 "<dl>" .
                     "<dt>Where was PhpPrettyPrint::dump() called?</dt>" .
                     "<dd>File: {$options['file']}</dd>" .
@@ -322,10 +387,12 @@ class HtmlBuilder extends Html
 
         foreach($array as $key => $value)
         {
-            if(is_callable($value) || is_object($value))
+            if(is_object($value))
             {
-                $this->html .= "<dt class=\"" . $this->cssClasses['dt'] . "\"><span class=\"css-string-object\">Object</span></dt>";
-                $this->buildFromObject($value);
+                $reflection = new \ReflectionObject($value);
+
+                $this->html .= "<dt class=\"" . $this->cssClasses['dt'] . "\"><span class=\"css-string-object\">Object: {$reflection->getName()}</span></dt>";
+                $this->buildFromObject($value, $reflection);
             }
             else
             {

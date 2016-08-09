@@ -24,7 +24,7 @@ class PhpPrettyPrint
      * @param $dump
      * @param array $options
      */
-    public static function dump($dump, array $options =[])
+    public static function dump($dump, array $options = [])
     {
         $settings = json_decode(file_get_contents(__DIR__ . '/../../settings.json'), true);
 
@@ -38,6 +38,7 @@ class PhpPrettyPrint
         }
 
         $css = isset($settings['theme']) ? file_get_contents(__DIR__ . '/Themes/' . $settings['theme'] . '.css') : '';
+        $js = file_get_contents(__DIR__ . '/Themes/js.js');
 
         if(isset($settings['remove-git-link']) && $settings['remove-git-link'] == false)
         {
@@ -99,6 +100,7 @@ class PhpPrettyPrint
         if(isset($settings['pre-tags']) && $settings['pre-tags'] == true)
         {
             static::$output .= "<style>{$css}</style>";
+            static::$output .= "<script src='/src/junky/php-pretty-print/Themes/js.js'></script>";
             echo '<pre>';
             echo static::$output;
             static::$output = '';
@@ -107,6 +109,7 @@ class PhpPrettyPrint
         }
 
         static::$output .= "<style>{$css}</style>";
+        static::$output .= "<script type=\"<text/javascript>\">{$js}</script>";
         echo static::$output;
         static::$output = '';
         die();

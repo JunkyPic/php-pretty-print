@@ -1,9 +1,7 @@
 html, body{
     background-color: #231815;
 }
-.pretty-print{
-    color: #fff;
-}
+
 pre {
     white-space: pre-wrap;       /* Since CSS 2.1 */
     white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
@@ -20,28 +18,41 @@ pre {
 .css-type-integer {
     color:#40c133;
 }
-
+.js-object-default,
+.js-object-reflection{
+    padding-left:30px;
+}
 .css-array-keys{
     color: #9876AA;
 }
 .css-array-values{
     color:#40c133;
 }
-
 .css-string-object{
     color: #B2772F;
 }
 
-.php-pretty-print-header{
+.css-header{
     color: #ffffff;
 }
 .css-pointer{
     color: #ffffff;
 }
-.argument-and-type{
+.css-argument-and-type{
     color: #B2772F;
 }
 .github{
     color:#ffffff;
     text-decoration: none;
+}
+.button {
+    background-color: rgb(64, 193, 51);
+    border: 0;
+}
+
+.hide{
+    display: none;
+}
+.show{
+    display: block;
 }
