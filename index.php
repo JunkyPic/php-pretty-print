@@ -24,6 +24,7 @@ Pellentesque elementum tortor nibh, non pellentesque augue efficitur a. Fusce id
     'object1' => function ()
     {
     },
+    'another entry',
 ];
 $string = "#000' onload='alert(document.cookie)";
 PhpPrettyPrint::dump($string);
