@@ -20,7 +20,7 @@
 >
     <testsuites>
         <testsuite name="AllTests">
-            <directory>./src/Tests</directory>
+            <directory>./src/tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>

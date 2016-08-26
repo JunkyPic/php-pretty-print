@@ -1,4 +1,12 @@
 <?php
+/**
+ * Just so we're clear on this: Yes, I know private/protected methods should not be tested
+ * and if they are tested then it means there's probably something wrong with how the class
+ * is built or how the testes themselfs are written, this was made for fun.
+ *
+ * https://sebastian-bergmann.de/archives/881-Testing-Your-Privates.html
+ */
+
 use \Junky\PhpPrettyPrint\Html\HtmlBuilder;
 
 class HtmlBuilderTest extends PHPUnit_Framework_TestCase{
@@ -55,5 +63,34 @@ class HtmlBuilderTest extends PHPUnit_Framework_TestCase{
 
         $string = "A 'quote' is <b>bold</b>";
         $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$string]), 'A \'quote\' is &lt;b&gt;bold&lt;/b&gt;');
+    }
+
+    public function testGetExcerpt()
+    {
+        $method = new ReflectionMethod(\Junky\PhpPrettyPrint\Html\HtmlBuilder::class, 'getExcerpt');
+        $method->setAccessible(true);
+        $really_long_string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+
+        // Default 250
+        // + 3 trailing dots
+        $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$really_long_string => 250]), 250);
+
+        // less than 250
+        $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$really_long_string => 153]), 153);
+
+        // excerpt is false
+        // god damn it phpunit...
+        $this->assertEquals($method->invokeArgs(new HtmlBuilder(), [$really_long_string => strlen($really_long_string)]), strlen($really_long_string));
+    }
+
+    public function testGetExcerptException()
+    {
+        $class = $this->getMock(\Junky\PhpPrettyPrint\Html\HtmlBuilder::class);
+        $class->method('getExcerpt', ['excerpt' => 'string'])->willThrowException(new Exception());
+    }
+
+    public function testCreate()
+    {
+        $this->assertInstanceOf(HtmlBuilder::class, HtmlBuilder::create());
     }
 }
